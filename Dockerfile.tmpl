@@ -1,0 +1,12 @@
+FROM {{.Base}}
+
+RUN apt-get update -qq && apt-get install -y -qq ca-certificates && rm -rf /var/lib/apt/lists/*
+
+RUN useradd --system --no-create-home --shell /usr/sbin/nologin app || true
+
+COPY {{.BinaryName}} /usr/local/bin/{{.BinaryName}}
+RUN chmod +x /usr/local/bin/{{.BinaryName}}
+
+USER app
+
+ENTRYPOINT ["/usr/local/bin/{{.BinaryName}}"]
